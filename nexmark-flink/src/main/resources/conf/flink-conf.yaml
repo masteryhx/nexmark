@@ -16,12 +16,13 @@
 # limitations under the License.
 ################################################################################
 #execution.target: yarn-per-job
-taskmanager.memory.process.size: 8G
+taskmanager.memory.process.size: 16G
+taskmanager.memory.managed.fraction: 0.8
+taskmanager.numberOfTaskSlots: 4
 jobmanager.rpc.address: localhost
 jobmanager.rpc.port: 6123
-jobmanager.memory.process.size: 8G
-taskmanager.numberOfTaskSlots: 1
-parallelism.default: 8
+jobmanager.memory.process.size: 16G
+parallelism.default: 24
 io.tmp.dirs: /tmp
 #==============================================================================
 # JVM
@@ -85,6 +86,8 @@ state.backend.incremental: true
 execution.checkpointing.interval: 180000
 execution.checkpointing.mode: EXACTLY_ONCE
 state.backend.local-recovery: true
+state.backend.rocksdb.use-bloom-filter: true
+state.backend.rocksdb.memory.partitioned-index-filters: true
 
 # dir to store states
 # state.checkpoints.dir: hdfs://benchmark01/checkpoint
@@ -109,6 +112,7 @@ table.exec.mini-batch.enabled: true
 table.exec.mini-batch.allow-latency: 2s
 table.exec.mini-batch.size: 50000
 table.optimizer.distinct-agg.split.enabled: true
+pipeline.object-reuse: true
 
 # disable final checkpoint to avoid test waiting for the last checkpoint complete
 execution.checkpointing.checkpoints-after-tasks-finish.enabled: false

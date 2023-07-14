@@ -1,0 +1,27 @@
+# Using docker-compose mode deploy RisingWave, see https://www.risingwave.dev/docs/current/risingwave-trial/?method=docker-compose for more detail.
+# We total configure 6 compute node on three machine, every machine has two compute nodes and two compaction nodes. The frontend and meta service node deploy in another machine. The machine is AWS EC2 m6id.2xlarge (8vCPUs 32 GB memory).
+# In docker-compose yaml configure compute node memory and parallelism info, this is an example, the memory is 16G and parallelism is 4.
+compute-node-0:
+  image: "ghcr.io/risingwavelabs/risingwave:latest"
+  command:
+    - compute-node
+    - "--parallelism"
+    - "4"
+    - "--total-memory-bytes"
+    - "17179869184"
+    - "--config-path"
+    - /risingwave.toml
+
+compute-node-1:
+  image: "ghcr.io/risingwavelabs/risingwave:latest"
+  command:
+    - compute-node
+    - "--parallelism"
+    - "4"
+    - "--total-memory-bytes"
+    - "17179869184"
+    - "--config-path"
+    - /risingwave.toml
+
+## Configure checkpoint frequency in risingwave.toml
+checkpoint_frequency: 180

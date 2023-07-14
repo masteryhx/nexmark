@@ -20,7 +20,7 @@
 # Rest & web frontend
 #==============================================================================
 
-# The metric reporter server host.
+# The metric reporter server host. Replace it with your host ip
 nexmark.metric.reporter.host: localhost
 # The metric reporter server port.
 nexmark.metric.reporter.port: 9098
@@ -29,13 +29,11 @@ nexmark.metric.reporter.port: 9098
 # Benchmark workload configuration (events.num)
 #==============================================================================
 
-nexmark.workload.suite.100m.events.num: 100000000
-nexmark.workload.suite.100m.tps: 10000000
-nexmark.workload.suite.100m.queries: "q0,q1,q2,q3,q4,q5,q7,q8,q9,q10,q11,q12,q13,q14,q15,q16,q17,q18,q19,q20,q21,q22"
-nexmark.workload.suite.100m.queries.cep: "q0,q1,q2,q3"
-nexmark.workload.suite.100m.warmup.duration: 120s
-nexmark.workload.suite.100m.warmup.events.num: 100000000
-nexmark.workload.suite.100m.warmup.tps: 10000000
+# Kafka source is unbounded, we need to use tps mode, so the events number must be set to 0
+nexmark.workload.suite.1000m.events.num: 0
+nexmark.workload.suite.1000m.tps: 10000000
+nexmark.workload.suite.1000m.queries: "q0,q1,q2,q3,q4,q5,q5-rewrite,q7,q7-rewrite,q8,q9,q10,q11,q12,q13,q14,q15,q16,q17,q18,q19,q20,q21,q22"
+nexmark.workload.suite.1000m.warmup.duration: 0
 
 #==============================================================================
 # Benchmark workload configuration (tps, legacy mode)
@@ -46,7 +44,7 @@ nexmark.workload.suite.100m.warmup.tps: 10000000
 # When to monitor the metrics, default 3min after job is started
 # nexmark.metric.monitor.delay: 3min
 # How long to monitor the metrics, default 3min, i.e. monitor from 3min to 6min after job is started
-# nexmark.metric.monitor.duration: 3min
+nexmark.metric.monitor.duration: 30min
 
 # nexmark.workload.suite.10m.tps: 10000000
 # nexmark.workload.suite.10m.queries: "q0,q1,q2,q3,q4,q5,q7,q8,q9,q10,q11,q12,q13,q14,q15,q16,q17,q18,q19,q20,q21,q22"
@@ -55,9 +53,10 @@ nexmark.workload.suite.100m.warmup.tps: 10000000
 # Workload for data generation
 #==============================================================================
 
+# Using datagen generate 1 billion records, then insert into kafka
+nexmark.workload.suite.datagen.events.num: 1000000000
 nexmark.workload.suite.datagen.tps: 10000000
 nexmark.workload.suite.datagen.queries: "insert_kafka"
-nexmark.workload.suite.datagen.queries.cep: "insert_kafka"
 
 #==============================================================================
 # Flink REST
