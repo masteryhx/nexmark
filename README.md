@@ -85,7 +85,7 @@ Before start to run the benchmark, you should build the Nexmark benchmark first 
 
 ### Setup Cluster
 
-- Step 1: Download the latest Flink package from the [download page](https://flink.apache.org/downloads.html). Say `flink-<version>-bin-scala_2.11.tgz`.
+- Step1: Download the Flink package of 1.16.2 from the [download page](https://flink.apache.org/downloads.html). Say `flink-<version>-bin-scala_2.11.tgz`.
 - Step2: Copy the archives (`flink-<version>-bin-scala_2.11.tgz`, `nexmark-flink.tgz`) to your master node and extract it.
   ```
   tar xzf flink-<version>-bin-scala_2.11.tgz; tar xzf nexmark-flink.tgz
@@ -96,15 +96,17 @@ Before start to run the benchmark, you should build the Nexmark benchmark first 
   - Edit `flink/conf/workers` and enter the IP address of each worker node. Recommand to set 8 entries.
   - Replace `flink/conf/flink-conf.yaml` by `nexmark/conf/flink-conf.yaml`. Remember to update the following configurations:
     - Set `jobmanager.rpc.address` to you master IP address
-    - Set `state.checkpoints.dir` to your local file path (recommend to use SSD), e.g. `file:///home/username/checkpoint`.
-    - Set `state.backend.rocksdb.localdir` to your local file path (recommend to use SSD), e.g. `/home/username/rocksdb`.
+    - Set `state.checkpoints.dir` to your s3 path, e.g. `s3://benchmark/flink/checkpoint`.
+    - Set `s3.access-key` to your access key and set `s3.secret-key` to your secret key. 
+    - Set `state.backend.rocksdb.localdir` to your local file path (use SSD), e.g. `/home/username/rocksdb`.
+  - Download the s3 plugin jar from [download page](https://repo1.maven.org/maven2/org/apache/flink/flink-s3-fs-hadoop/1.16.2/flink-s3-fs-hadoop-1.16.2.jar) to flink/lib/
 - Step5: Configure Nexmark benchmark.
   - Edit `nexmark/conf/nexmark.yaml` and set `nexmark.metric.reporter.host` to your master IP address.
 - Step6: Copy `flink` and `nexmark` to your worker nodes using `scp`.
 - Step7: Start Flink Cluster by running `flink/bin/start-cluster.sh` on the master node.
 - Step8: Setup the benchmark cluster by running `nexmark/bin/setup_cluster.sh` on the master node.
 - (If you want to use kafka source instead of datagen source) Step9: Prepare Kafka
-  - (Please make sure Flink Kafka Jar is ready in flink/lib/ [download page](https://ci.apache.org/projects/flink/flink-docs-release-1.13/docs/connectors/table/kafka/#dependencies))
+  - (Please make sure Flink Kafka Jar is ready in flink/lib/ [download page](https://ci.apache.org/projects/flink/flink-docs-release-1.16/docs/connectors/table/kafka/#dependencies))
   - Start your kafka cluster. (recommend to use SSD)
   - Create kafka topic: `bin/kafka-topics.sh --create --topic nexmark --bootstrap-server localhost:9092 --partitions 24`.
   - Edit `nexmark/conf/nexmark.yaml`, set `kafka.bootstrap.servers`.
@@ -113,7 +115,7 @@ Before start to run the benchmark, you should build the Nexmark benchmark first 
 
 ### Run Nexmark
 
-You can run the Nexmark benchmark by running `nexmark/bin/run_query.sh all` on the master node. It will run all the queries one by one, and collect benchmark metrics automatically. It will take 50 minutes to finish the benchmark by default. At last, it will print the benchmark summary result (Cores * Time(s) for each query) on the console.
+You can run the Nexmark benchmark by running `nexmark/bin/run_query.sh all` on the master node. It will run all the queries one by one, and collect benchmark metrics automatically. At last, it will print the benchmark summary result (Average Throughput for each query) on the console.
 
 You can also run specific queries by running `nexmark/bin/run_query.sh q1,q2`.
 

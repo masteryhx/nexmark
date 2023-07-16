@@ -79,18 +79,22 @@ taskmanager.network.request-backoff.max: 300000
 # State & Checkpoint
 #==============================================================================
 
+# Change to your s3 path
+state.checkpoints.dir: s3://benchmark/flink/checkpoint
+# Change to your local dir path
+state.backend.rocksdb.localdir: /home/username/rocksdb
+# Change to your s3 access key
+s3.access-key: your_access_key
+# Change to your s3 secret key
+s3.secret-key: your_secret_key
+
 state.backend: rocksdb
-state.checkpoints.dir: file:///path/to/checkpoint
-state.backend.rocksdb.localdir: /tmp
 state.backend.incremental: true
 execution.checkpointing.interval: 180000
 execution.checkpointing.mode: EXACTLY_ONCE
 state.backend.local-recovery: true
 state.backend.rocksdb.use-bloom-filter: true
 state.backend.rocksdb.memory.partitioned-index-filters: true
-
-# dir to store states
-# state.checkpoints.dir: hdfs://benchmark01/checkpoint
 
 #==============================================================================
 # Runtime Others

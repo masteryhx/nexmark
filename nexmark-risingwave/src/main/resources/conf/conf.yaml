@@ -1,8 +1,10 @@
 # Using docker-compose mode deploy RisingWave, see https://www.risingwave.dev/docs/current/risingwave-trial/?method=docker-compose for more detail.
 # We total configure 6 compute node on three machine, every machine has two compute nodes and two compaction nodes. The frontend and meta service node deploy in another machine. The machine is AWS EC2 m6id.2xlarge (8vCPUs 32 GB memory).
-# In docker-compose yaml configure compute node memory and parallelism info, this is an example, the memory is 16G and parallelism is 4.
+# Some aws-related environment variables must be configured in aws.env, some configs could be seen in risingwave.toml.
+
+# In compute-node docker-compose yaml configure compute node memory and parallelism info, this is an example, the memory is 16G and parallelism is 4.
 compute-node-0:
-  image: "ghcr.io/risingwavelabs/risingwave:latest"
+  image: "ghcr.io/risingwavelabs/risingwave:v0.19.2"
   command:
     - compute-node
     - "--parallelism"
@@ -11,9 +13,10 @@ compute-node-0:
     - "17179869184"
     - "--config-path"
     - /risingwave.toml
+  env_file: aws.env
 
 compute-node-1:
-  image: "ghcr.io/risingwavelabs/risingwave:latest"
+  image: "ghcr.io/risingwavelabs/risingwave:v0.19.2"
   command:
     - compute-node
     - "--parallelism"
@@ -22,6 +25,14 @@ compute-node-1:
     - "17179869184"
     - "--config-path"
     - /risingwave.toml
+  env_file: aws.env
 
-## Configure checkpoint frequency in risingwave.toml
-checkpoint_frequency: 180
+# In meta-node docker-compose yaml configure state-store to your s3 path, example as below.
+meta-node-0:
+  image: "ghcr.io/risingwavelabs/risingwave:v0.19.2"
+  commond:
+    - "--state-store"
+    - "hummock+s3://benchmark"
+    - "--config-path"
+    - /risingwave.toml
+  env_file: aws.env

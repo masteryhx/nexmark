@@ -1,0 +1,3 @@
+# Configure checkpoint_frequency to 3 mins
+[system]
+checkpoint_frequency = 180
