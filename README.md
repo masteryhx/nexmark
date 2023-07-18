@@ -149,7 +149,7 @@ Flink version: 1.16.2.
 
 ### Workloads
 
-Deploy Kafka on a standalone machine, using docker is recommended. Running `nexmark/bin/run_query.sh insert_kafka`, Use Nexmark builtin datagen generate 1 billion rows write to Kafka. All queries use Kafka as the data source.
+Deploy Kafka on a standalone machine (AWS EC2 m6id.2xlarge), using docker is recommended. Running `nexmark/bin/run_query.sh insert_kafka`, Use Nexmark builtin datagen generate 1 billion rows write to Kafka. All queries use Kafka as the data source.
 
 Use the kafka source, some notable configurations including:
 
