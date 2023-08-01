@@ -108,7 +108,7 @@ Before start to run the benchmark, you should build the Nexmark benchmark first 
 - (If you want to use kafka source instead of datagen source) Step9: Prepare Kafka
   - (Please make sure Flink Kafka Jar is ready in flink/lib/ [download page](https://ci.apache.org/projects/flink/flink-docs-release-1.16/docs/connectors/table/kafka/#dependencies))
   - Start your kafka cluster. (recommend to use SSD)
-  - Create kafka topic: `bin/kafka-topics.sh --create --topic nexmark --bootstrap-server localhost:9092 --partitions 24`.
+  - Create kafka topic: `bin/kafka-topics.sh --create --topic nexmark --bootstrap-server localhost:9092 --partitions 8`.
   - Edit `nexmark/conf/nexmark.yaml`, set `kafka.bootstrap.servers`.
   - Prepare source data: `nexmark/bin/run_query.sh insert_kafka`.
   - NOTE: Kafka source is endless, only supports tps mode (unlimited events.num) now.
@@ -125,8 +125,8 @@ You can also tune the workload of the queries by editing `nexmark/conf/nexmark.y
 
 ### Machines
 
-Minimum requirements:
-- 3 worker node 
+Current Setup:
+- 1 worker node 
 - Each machine has 8 cores and 32 GB RAM (AWS EC2 m6id.2xlarge)
 - 500 GB SSD local disk (NVMe)
 
@@ -136,9 +136,9 @@ Use the default configuration file `flink-conf.yaml` defined in `nexmark-flink/s
 
 Some notable configurations including:
 
-- 6 TaskManagers, each has 4 slot
+- 1 TaskManagers, each has 8 slot
 - 16 GB for each TaskManager and JobManager
-- Job parallelism: 24
+- Job parallelism: 8
 - Checkpoint enabled with exactly once mode and 3 minutes interval
 - Use RocksDB state backend with incremental checkpoint enabled
 - MiniBatch optimization enabled with 2 seconds interval and 50000 rows

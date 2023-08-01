@@ -18,11 +18,11 @@
 #execution.target: yarn-per-job
 taskmanager.memory.process.size: 16G
 taskmanager.memory.managed.fraction: 0.8
-taskmanager.numberOfTaskSlots: 4
+taskmanager.numberOfTaskSlots: 8
 jobmanager.rpc.address: localhost
 jobmanager.rpc.port: 6123
 jobmanager.memory.process.size: 16G
-parallelism.default: 24
+parallelism.default: 8
 io.tmp.dirs: /tmp
 #==============================================================================
 # JVM
